@@ -98,8 +98,8 @@ class bigint {
         static std::string lcm(std::string, std::string);
         static std::string fact(std::string);
         static bool isPalindrome(std::string);
-        static bool isPrime(std::string);   
-
+        static bool isPrime(std::string);
+        static int64_t to_i64(std::string);
 
     public: 
         // Constructors for big int.
@@ -122,6 +122,10 @@ class bigint {
         }
         bigint(const bigint &n) {
             str = n.str;
+        }
+        
+        int64_t _to_i64(){
+            return std::stoi(str);
         }
 
         // operator overloading for output stream {<<}
@@ -330,9 +334,9 @@ class bigint {
             ans.str = mod(str, n.str);
             return ans;
         }
-        friend bigint operator % (bigint const &n1, int n2) {
+        bigint operator % (int n2) {
             bigint ans;
-            ans.str = mod(n1.str, std::to_string(n2));
+            ans.str = mod(str, std::to_string(n2));
             return ans;
         }
         friend bigint operator % (int n1, bigint const &n2) {

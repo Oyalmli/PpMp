@@ -1,6 +1,6 @@
 # PPMP
 Stack based, values end up on stack when computing.  
-Values in the stack and memory are 64bit integers
+Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigint)
 
 [Math](#math)  
 [Pointers](#pointers)  

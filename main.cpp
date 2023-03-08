@@ -6,9 +6,6 @@
 
 #include "BigInt.hpp"
 
-// PPMP
-// Program Pointer
-// Memory Pointer
 std::string extension(std::string file_name) {
     int position = file_name.find_last_of(".");
     std::string result = file_name.substr(position + 1);
@@ -34,7 +31,7 @@ bool change_program_ptr(State& state, size_t program_length, int delta){
     return 1;
 }
 
-void change_memory_ptr(State& state, std::vector<int64_t>& memory, int delta){
+void change_memory_ptr(State& state, std::vector<bigint>& memory, int delta){
     //find difference from memory_ptr to start, if delta less, add x to front
     if ((static_cast<int64_t>(state.memoryPtr) + delta) < memory.size() && (static_cast<int64_t>(state.memoryPtr) + delta) >= 0) {
         state.memoryPtr += delta;
@@ -71,7 +68,7 @@ void scroll_back(State& state, std::string& program) {
     state.programPtr = new_ptr;
 }
 
-void mathOp(const char op, std::vector<int64_t>& stack) {
+void mathOp(const char op, std::vector<bigint>& stack) {
     auto a = stack.back();
     stack.pop_back();
     auto b = stack.back();
@@ -87,7 +84,7 @@ void mathOp(const char op, std::vector<int64_t>& stack) {
     }
 }
 
-void print_info(State state, std::string& program, std::vector<int64_t>& memory, std::vector<int64_t>& stack, char op){
+void print_info(State state, std::string& program, std::vector<bigint>& memory, std::vector<bigint>& stack, char op){
     //std::cout << program << " | ";
     std::cout << "("<<(op == '\n' ? 'n' : op)<<") {" 
         << state.memoryPtr << "," 
@@ -103,12 +100,12 @@ void print_info(State state, std::string& program, std::vector<int64_t>& memory,
     std::cout << "<\n";
 }
 
-void run(State state, std::string& program, std::vector<int64_t>& memory, std::vector<int64_t>& stack) {
+void run(State state, std::string& program, std::vector<bigint>& memory, std::vector<bigint>& stack) {
     using namespace std::this_thread;
     using namespace std::chrono;
 
     while (state.programPtr < program.size()) {
-        //sleep_for(milliseconds(1));
+        sleep_for(milliseconds(20));
         char op = program.at(state.programPtr);
         //print_info(state, program, memory, stack, op);
         if (state.string_mode) {
@@ -131,15 +128,15 @@ void run(State state, std::string& program, std::vector<int64_t>& memory, std::v
             case '/': mathOp(op, stack); break;
             case '%': mathOp(op, stack); break;
             
-            case '>': {int64_t delta = stack.back(); stack.pop_back(); if (!change_program_ptr(state, program.size(), delta)) { goto end; };} break;
-            case '<': {int64_t delta = stack.back(); stack.pop_back(); if (!change_program_ptr(state, program.size(),-delta)) { goto end; };} break;
+            case '>': {bigint delta = stack.back(); stack.pop_back(); if (!change_program_ptr(state, program.size(), delta._to_i64())) { goto end; };} break;
+            case '<': {bigint delta = stack.back(); stack.pop_back(); if (!change_program_ptr(state, program.size(),-delta._to_i64())) { goto end; };} break;
             case '^': change_memory_ptr(state, memory, 1); break;
             case 'v': change_memory_ptr(state, memory, -1); break;
-            case 'j': {int64_t delta = stack.back(); stack.pop_back(); change_memory_ptr(state, memory, delta); } break;
-            case 'J': {int64_t delta = memory.at(state.memoryPtr); change_memory_ptr(state, memory, delta); } break;
-            case 'e': {int64_t tmp = stack.back(); stack.pop_back(); program[state.programPtr] = static_cast<char>(tmp % 128); } break;
-            case 'E': {int64_t tmp = memory.at(state.memoryPtr); program[state.programPtr] = static_cast<char>(tmp % 128); } break;
-            case ']': {int64_t tmp = stack.back(); if (tmp) { scroll_back(state, program); } else { stack.pop_back(); } } break;
+            case 'j': {bigint delta = stack.back(); stack.pop_back(); change_memory_ptr(state, memory, delta._to_i64()); } break;
+            case 'J': {bigint delta = memory.at(state.memoryPtr); change_memory_ptr(state, memory, delta._to_i64()); } break;
+            case 'e': {bigint tmp = stack.back() % 128; stack.pop_back(); program[state.programPtr] = static_cast<char>((tmp % 128)._to_i64()); } break;
+            case 'E': {bigint tmp = memory.at(state.memoryPtr); program[state.programPtr] = static_cast<char>((tmp % 128)._to_i64()); } break;
+            case ']': {bigint tmp = stack.back(); if (0!=tmp) { scroll_back(state, program); } else { stack.pop_back(); } } break;
 
             case '0': stack.push_back(0); break;
             case '1': stack.push_back(1); break;
@@ -153,8 +150,8 @@ void run(State state, std::string& program, std::vector<int64_t>& memory, std::v
             case '9': stack.push_back(9); break;
 
             case '"': state.string_mode = true; break;
-            case 'w': {std::cout << static_cast<char>(stack.back() % 128); stack.pop_back();} break;
-            case 'W': std::cout << static_cast<char>(memory.at(state.memoryPtr) % 128); break;
+            case 'w': {std::cout << static_cast<char>((stack.back() % 128)._to_i64()); stack.pop_back();} break;
+            case 'W': std::cout << static_cast<char>((memory.at(state.memoryPtr) % 128)._to_i64()); break;
             case 'p': {std::cout << stack.back(); stack.pop_back(); } break;
             case 'P': std::cout << memory.at(state.memoryPtr); break;
             case 'n': {int64_t tmp; std::cin >> tmp; stack.push_back(tmp); } break;
@@ -163,14 +160,14 @@ void run(State state, std::string& program, std::vector<int64_t>& memory, std::v
             case 'C': {char tmp; std::cin >> tmp; memory[state.memoryPtr] = tmp; } break;
 
             case 'g': stack.push_back(memory.at(state.memoryPtr)); break;
-            case 's': {int64_t tmp = stack.back(); stack.pop_back(); memory[state.memoryPtr] = tmp; } break;
-            case 'd': {int64_t delta = stack.back(); stack.pop_back(); memory[state.memoryPtr] = memory[state.memoryPtr + delta]; } break;
+            case 's': {bigint tmp = stack.back(); stack.pop_back(); memory[state.memoryPtr] = tmp; } break;
+            case 'd': {int64_t delta = stack.back()._to_i64(); stack.pop_back(); memory[state.memoryPtr] = memory[state.memoryPtr + delta]; } break;
 
             case ':': { stack.push_back(stack.back()); } break;
             case '$': { stack.pop_back(); } break;
             case 'z': { 
-                int64_t a = stack.back(); stack.pop_back();
-                int64_t b = stack.back(); stack.pop_back();
+                bigint a = stack.back(); stack.pop_back();
+                bigint b = stack.back(); stack.pop_back();
                 stack.push_back(a); stack.push_back(b);
             } break;
             default: {
@@ -202,8 +199,8 @@ int main(int argc, char* argv[]) {
     std::string program((std::istreambuf_iterator<char>(t)),
                         std::istreambuf_iterator<char>());
 
-    std::vector<int64_t> memory = {0};
-    std::vector<int64_t> stack;
+    std::vector<bigint> memory = {0};
+    std::vector<bigint> stack;
     State state;
     run(state, program, memory, stack);
     //print_info(state, program, memory, stack, ' ');
