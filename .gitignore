@@ -4,3 +4,5 @@
 
 *.out
 *.txt
+!CmakeLists.txt
+*/build
