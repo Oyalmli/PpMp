@@ -12,10 +12,7 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 
 **Example usage**  
 ```zsh
-g++ main.cpp -std=c++11 -O2 -o ppmp
-```
-
-```zsh
+g++ main.cpp -std=c++11 -O2 -o ppmp &&
 ./ppmp examples/hello_world.ppmp
 ```
 
@@ -26,7 +23,7 @@ tty
 ```
 *Terminal 2*
 ```zsh
-g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100 &&
+g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=50 &&
 ./ppmp examples/fib.ppmp > /dev/ttys{N}
 ```
 
