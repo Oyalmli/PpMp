@@ -18,7 +18,7 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 **Or using two terminals**
 |Terminal 1|Terminal 2|
 |:-|:-|
-| -<br>-<br>```./ppmp examples/fib.ppmp > /dev/ttys{N}```|```tty<br>/dev/ttys{N}```<br>- |
+| -<br>-<br>```./ppmp examples/fib.ppmp > /dev/ttys{N}```|```tty```<br>```/dev/ttys{N}```<br>- |
 
 [Math](#math)  
 [Pointers](#pointers)  
