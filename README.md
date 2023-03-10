@@ -1,13 +1,14 @@
 # PPMP
-Stack based, values end up on stack when computing.  
+## Program Pointer | Memory Pointer
+Values end up on stack when computing. Stack values can be set in and retrieved from memory.
 Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigint)
 
 ## Running 
 **Optional flags**
 * -DPRINT_INFO
-  * Prints a "stack-trace" *output op (MP, PP, SM) [ Memory ] | Stack*
+  * Prints a "stack-trace" ***output op (MP, PP, SM) [ Memory ] | Stack***
 * -SLEEP_TIME={number}
-  * Sleeps thread between each step
+  * Sleeps the thread between each step
 
 **Example usage**
 ```
