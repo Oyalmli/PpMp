@@ -92,25 +92,25 @@ const char *red =  "\u001b[38;5;197m";
 const char *clear = "\u001b[0m";
 
 void print_info(const State& state, const std::string& program, const std::vector<bigint>& memory, const std::vector<bigint>& stack, const char &op){
-    printf("\t%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow,state.memoryPtr, state.programPtr, state.string_mode ? 'T' : 'F', clear);
+    fprintf(stderr, "%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow,state.memoryPtr, state.programPtr, state.string_mode ? 'T' : 'F', clear);
     for (int i = 0; i < memory.size(); ++i) {
         auto e = memory.at(i);
         if (i == state.memoryPtr) {
-            std::cout << orange << e << clear << " ";
+            std::cerr << orange << e << clear << " ";
         } else {
-            std::cout << e << " ";
+            std::cerr << e << " ";
         }
     }
-    std::cout << "] | ";
+    std::cerr << "] | ";
     for (int i = 0; i < stack.size(); ++i) {
         auto e = stack.at(i);
         if (i == stack.size()-1) {
-            std::cout << green << e << clear << " ";
+            std::cerr << green << e << clear << " ";
         } else {
-            std::cout << e << " ";
+            std::cerr << e << " ";
         }
     }
-    std::cout << red << '\n';
+    std::cerr << red << '\n';
 }
 
 bool step(State& state, std::string& program, std::vector<bigint>& memory, std::vector<bigint>& stack) {

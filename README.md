@@ -1,7 +1,7 @@
 # PPMP
 ## Program Pointer | Memory Pointer
 Values end up on stack when computing. Stack values can be set in and retrieved from memory.
-Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigint)
+Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigint).
 
 ## Running 
 **Optional flags**
@@ -13,7 +13,12 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 **Example usage**  
 `g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100`
 
-`./ppmp examples/hello_world.ppmp`
+`./ppmp examples/hello_world.ppmp`  
+
+**Or using two terminals**
+|Terminal 1|Terminal 2|
+|:-|:-|
+| -<br>-<br>./ppmp examples/fib.ppmp > /dev/ttys{N} |tty<br>/dev/ttys{N}<br>- |
 
 [Math](#math)  
 [Pointers](#pointers)  
@@ -80,7 +85,7 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 | Op | Function | Pops |
 |:-:|---|---|
 |:|Duplicates the value at the top of the stack||
-|$|Drops the value at the top of the stack||
+|$|Drops the value at the top of the stack|&check;|
 |z|Swaps the top two values of the stack||
 
 ## Examples
