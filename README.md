@@ -11,14 +11,24 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
   * Sleeps the thread between each step
 
 **Example usage**  
-```g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100```
+```zsh
+g++ main.cpp -std=c++11 -O2 -o ppmp
+```
 
-```./ppmp examples/hello_world.ppmp```  
+```zsh
+./ppmp examples/hello_world.ppmp
+```
 
-**Or using two terminals**
-|Terminal 1|Terminal 2|
-|:-|:-|
-| -<br>-<br>```./ppmp examples/fib.ppmp > /dev/ttys{N}```|```tty```<br>```/dev/ttys{N}```<br>- |
+**Or using two terminals**  
+*Terminal 1*
+```zsh
+tty
+```
+*Terminal 2*
+```zsh
+g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100 &&
+./ppmp examples/fib.ppmp > /dev/ttys{N}
+```
 
 [Math](#math)  
 [Pointers](#pointers)  
