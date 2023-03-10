@@ -60,11 +60,10 @@
 // Big Integer Class
 
 class bigint {
+    public:
+     std::string str; // only data memeber for strong Big Integer as String. [For signed int, str[0] = '-']
     private: 
-        std::string str; // only data memeber for strong Big Integer as String. [For signed int, str[0] = '-']
-        
-
-        // Function Definitions for Internal Uses
+         // Function Definitions for Internal Uses
 
         static std::string trim(std::string);
         static std::string add(std::string, std::string);

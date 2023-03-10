@@ -80,7 +80,7 @@ void mathOp(const char op, std::vector<bigint>& stack) {
         case '*': stack.push_back(a*b); break;
         case '/': stack.push_back(a/b); break;
         case '%': stack.push_back(a%b); break;
-        default: std::cout << "Missing impl in mathOp: " << op << "\n"; 
+        default: fprintf(stderr, "Missing impl in mathOp: %c\n", op); 
     }
 }
 
@@ -92,25 +92,25 @@ const char *red =  "\u001b[38;5;197m";
 const char *clear = "\u001b[0m";
 
 void print_info(const State& state, const std::string& program, const std::vector<bigint>& memory, const std::vector<bigint>& stack, const char &op){
-    fprintf(stderr, "%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow, state.programPtr, state.memoryPtr, state.string_mode ? 'T' : 'F', clear);
+    fprintf(stderr, "\t%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow, state.programPtr, state.memoryPtr, state.string_mode ? 'T' : 'F', clear);
     for (int i = 0; i < memory.size(); ++i) {
         auto e = memory.at(i);
         if (i == state.memoryPtr) {
-            std::cerr << orange << e << clear << " ";
+            fprintf(stderr, "%s%s%s ", orange, e.str.c_str(), clear);
         } else {
-            std::cerr << e << " ";
+            fprintf(stderr, "%s ", e.str.c_str());
         }
     }
     std::cerr << "] | ";
     for (int i = 0; i < stack.size(); ++i) {
         auto e = stack.at(i);
         if (i == stack.size()-1) {
-            std::cerr << green << e << clear << " ";
+            fprintf(stderr, "%s%s%s ", green, e.str.c_str(), clear);
         } else {
-            std::cerr << e << " ";
+            fprintf(stderr, "%s ", e.str.c_str());
         }
     }
-    std::cerr << red << '\n';
+    fprintf(stderr, "%s\n", red);
 }
 
 bool step(State& state, std::string& program, std::vector<bigint>& memory, std::vector<bigint>& stack) {
@@ -158,10 +158,10 @@ bool step(State& state, std::string& program, std::vector<bigint>& memory, std::
         case '9': stack.push_back(9); break;
 
         case '"': state.string_mode = true; break;
-        case 'w': {std::cout << static_cast<char>((stack.back() % 128)._to_i64()); stack.pop_back();} break;
-        case 'W': std::cout << static_cast<char>((memory.at(state.memoryPtr) % 128)._to_i64()); break;
-        case 'p': {std::cout << stack.back(); stack.pop_back(); } break;
-        case 'P': std::cout << memory.at(state.memoryPtr); break;
+        case 'w': {fprintf(stdout, "%c", static_cast<char>((stack.back() % 128)._to_i64())); stack.pop_back();} break;
+        case 'W': fprintf(stdout, "%c", static_cast<char>((memory.at(state.memoryPtr) % 128)._to_i64())); break;
+        case 'p': {fprintf(stdout, "%s", stack.back().str.c_str()); stack.pop_back(); } break;
+        case 'P': fprintf(stdout, "%s", memory.at(state.memoryPtr).str.c_str()); break;
         case 'n': {int64_t tmp; std::cin >> tmp; stack.push_back(tmp); } break;
         case 'N': {int64_t tmp; std::cin >> tmp; memory[state.memoryPtr] = tmp; } break;
         case 'c': {char tmp; std::cin >> tmp; stack.push_back(tmp); } break;
@@ -179,7 +179,7 @@ bool step(State& state, std::string& program, std::vector<bigint>& memory, std::
             stack.push_back(a); stack.push_back(b);
         } break;
         default: {
-            std::cout << "Op not implemented: " << op << "\n";
+            fprintf(stderr, "Op not implemented: %c\n", op);
         }
     }
     change_program_ptr(state, program.size(), 1);
@@ -192,11 +192,14 @@ void run(State state, std::string& program, std::vector<bigint>& memory, std::ve
     using namespace std::this_thread;
     using namespace std::chrono;
     do {
+        
         #ifdef SLEEP_TIME 
             sleep_for(milliseconds(SLEEP_TIME));
         #endif
         #ifdef PRINT_INFO 
+            fflush(stdout);
             print_info(state, program, memory, stack, program.at(state.programPtr)); 
+            fflush(stderr);
         #endif
     } while (step(state, program, memory, stack));
     return;
