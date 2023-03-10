@@ -6,7 +6,7 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 ## Running 
 **Optional flags**
 * -DPRINT_INFO
-  * Prints a "stack-trace" ***output op (MP, PP, SM) [ Memory ] | Stack***
+  * Prints a "stack-trace" ***output op (PP, MP, SM) [ Memory ] | Stack***
 * -SLEEP_TIME={number}
   * Sleeps the thread between each step
 

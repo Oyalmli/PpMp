@@ -92,7 +92,7 @@ const char *red =  "\u001b[38;5;197m";
 const char *clear = "\u001b[0m";
 
 void print_info(const State& state, const std::string& program, const std::vector<bigint>& memory, const std::vector<bigint>& stack, const char &op){
-    fprintf(stderr, "%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow,state.memoryPtr, state.programPtr, state.string_mode ? 'T' : 'F', clear);
+    fprintf(stderr, "%s%s%c%s%s (%2zu %2zu %c)%s [ ", clear, white, (op == '\n' ? 'n' : op), clear, yellow, state.programPtr, state.memoryPtr, state.string_mode ? 'T' : 'F', clear);
     for (int i = 0; i < memory.size(); ++i) {
         auto e = memory.at(i);
         if (i == state.memoryPtr) {
