@@ -10,12 +10,10 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 * -SLEEP_TIME={number}
   * Sleeps the thread between each step
 
-**Example usage**
-```
-g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100
-./ppmp examples/hello_world.ppmp
-```
+**Example usage**  
+`g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100`
 
+`./ppmp examples/hello_world.ppmp`
 
 [Math](#math)  
 [Pointers](#pointers)  
