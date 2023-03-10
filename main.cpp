@@ -20,5 +20,4 @@ int main(int argc, char* argv[]) {
     std::vector<bigint> stack;
     State state;
     run(state, program, memory, stack);
-    //print_info(state, program, memory, stack, ' ');
 }

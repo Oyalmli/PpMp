@@ -2,6 +2,20 @@
 Stack based, values end up on stack when computing.  
 Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigint)
 
+## Running 
+**Optional flags**
+* -DPRINT_INFO
+  * Prints a "stack-trace" *output op (MP, PP, SM) [ Memory ] | Stack*
+* -SLEEP_TIME={number}
+  * Sleeps thread between each step
+
+**Example usage**
+```
+g++ main.cpp -std=c++11 -O2 -o ppmp -DPRINT_INFO -DSLEEP_TIME=100
+./ppmp examples/hello_world.ppmp
+```
+
+
 [Math](#math)  
 [Pointers](#pointers)  
 [Numbers](#numbers)  
@@ -31,7 +45,8 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 |J|Moves the memory pointer equal to the number in memory, expands memory if needed||
 |e|edits the value at the program equal to value in stack % 128|&check;|
 |E|edits the value at the program equal to value in memory % 128||
-|]|Moves the program pointer to the corresponding closing bracket "[". The program pointer moves past it if stack value is 0||
+|]|Moves the program pointer to the corresponding closing bracket "[" if stack value is not 0||
+|)|Moves the program pointer to the corresponding closing bracket "(" if memory value is not 0||
 
 ### Numbers (digits only)
 | Op | Function | Pops |
@@ -71,7 +86,7 @@ Values in the stack and memory are [BigInts](https://github.com/rgroshanrg/bigin
 
 ## Examples
 #### Hello World!
-`"!dlroW olleH"26*[zw1z-]`
+`0"!dlroW olleH"[w]`
 
 #### Fibonacci
 `10[:p52*w:s+gz]`
